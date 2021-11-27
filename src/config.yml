@@ -1,0 +1,32 @@
+messages:
+  obstructed: '&cYour autosell sign was obstructed.'
+  autosell_sold: '&eYour autosell sign sold &6{items} &efor &6${amount}'
+  sellsign_sold: '&eYou sold &6{items} &efor &6${amount} '
+  sellsign_removed: '&aSell sign removed!'
+  autosell_removed: '&aAutosell sign removed!'
+  autosell_removed_other: '&2{player}''s &aautosell sign removed!'
+  not_your_autosell: '&cThat is not your autosell sign.'
+  chest_not_your_autosell: '&cThat chest has autosell signs you do not own.'
+  sellsign_placed: '&aSell sign placed!'
+  autosell_placed: '&aAutosell sign placed!'
+  sellsign_required_on_chest: '&cSell signs must be placed on a chest.'
+  autosell_required_on_chest: '&cAutosell signs must be placed on a chest.'
+  autosell_already_in_place: '&cThere is already an autosell sign on this chest.'
+  autosell_limit_reached: '&cYou have reached the limit for autosell signs.'
+  no_permission: '&cNo permission.'
+  reloaded: '&aPlugin reloaded in &2{ms}ms'
+  invalid_usage: |-
+    &cInvalid usage. Try:
+    &4 - &f/sellsigns reload
+    &4 - &f/sellsigns view <player>
+    &f
+  invalid_player: '&cInvalid player &4{player}'
+  view_signs: |-
+    &6{player}'s &eAutosell Signs:
+    {signs}
+    &f
+  view_signs_value: ' &6- &f{location}'
+  view_signs_has_none: '&4{player} &chas no autosell signs.'
+
+settings:
+  autosell_interval: 15

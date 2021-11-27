@@ -1,0 +1,9 @@
+name: SellSigns
+author: Piggyster
+main: tk.piggyster.sellsigns.SellSignsPlugin
+version: 1.4
+depend: [ShopGUIPlus]
+load: POSTWORLD
+commands:
+  sellsigns:
+    permission: sellsigns.admin
