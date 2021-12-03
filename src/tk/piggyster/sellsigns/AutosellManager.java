@@ -1,5 +1,6 @@
 package tk.piggyster.sellsigns;
 
+import me.aqua.fadepets.PetsPlugin;
 import net.brcdev.shopgui.ShopGuiPlusApi;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -110,8 +111,17 @@ public class AutosellManager {
                         }
                         if(total == 0)
                             continue;
-                        SellSignsPlugin.getInstance().getEconomy().depositPlayer(player, total);
+                        double boostmoney = 0;
+                        if(SellSignsPlugin.getInstance().getServer().getPluginManager().getPlugin("SkyblockPets") != null) {
+                            boostmoney = (PetsPlugin.getInstance().getPlayerManager().getPlayerData(player.getUniqueId()).getMoneyBoost() / 100D) * total;
+                        }
                         player.sendMessage(Utils.getMessage("autosell_sold").replace("{items}", df.format(count)).replace("{amount}", df.format(total)));
+                        total += boostmoney;
+                        if(boostmoney > 0) {
+                            player.sendMessage(Utils.color("&a&l+ $" + df.format(boostmoney) + " &7(Pet Boost)"));
+                        }
+                        SellSignsPlugin.getInstance().getEconomy().depositPlayer(player, total);
+
                         if(removed.size() > 0) {
                             signs.removeAll(removed);
                             removeSigns(player, removed);

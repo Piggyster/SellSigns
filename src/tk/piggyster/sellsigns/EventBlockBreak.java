@@ -18,6 +18,7 @@ public class EventBlockBreak implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
+
         if(event.getBlock().getState() instanceof Sign) {
             Sign sign = (Sign) event.getBlock().getState();
             if(sign.getLine(1).equals(Utils.color("&1[Sell Chest]"))) {

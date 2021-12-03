@@ -49,7 +49,7 @@ public class EventSignChange implements Listener {
                     event.getPlayer().sendMessage(Utils.getMessage("autosell_already_in_place"));
                     return;
                 }
-                if(SellSignsPlugin.getInstance().getAutosellManager().getLimit(event.getPlayer()) <= SellSignsPlugin.getInstance().getAutosellManager().getPlaced(event.getPlayer()) && !event.getPlayer().isOp()) {
+                if(SellSignsPlugin.getInstance().getAutosellManager().getLimit(event.getPlayer()) <= SellSignsPlugin.getInstance().getAutosellManager().getPlaced(event.getPlayer()) && (!event.getPlayer().isOp() && !event.getPlayer().hasPermission("sellsigns.admin"))) {
                     event.getBlock().breakNaturally();
                     event.getPlayer().sendMessage(Utils.getMessage("autosell_limit_reached"));
                     return;
