@@ -4,7 +4,7 @@ main: tk.piggyster.sellsigns.SellSignsPlugin
 version: 1.5
 depend: [ShopGUIPlus]
 load: POSTWORLD
-loadbefore: [SkyblockPets]
+softdepend: [SkyblockPets, SuperiorSkyblock2]
 commands:
   sellsigns:
     permission: sellsigns.admin

@@ -1,5 +1,6 @@
 package tk.piggyster.sellsigns;
 
+import com.bgsoftware.superiorskyblock.api.SuperiorSkyblockAPI;
 import me.aqua.fadepets.PetsPlugin;
 import net.brcdev.shopgui.ShopGuiPlusApi;
 import org.bukkit.Material;
@@ -20,11 +21,19 @@ import java.text.DecimalFormat;
 
 public class EventInteract implements Listener {
 
+    private boolean skyblockHook;
+
+    public EventInteract() {
+        skyblockHook = SellSignsPlugin.getInstance().getServer().getPluginManager().getPlugin("SuperiorSkyblock") == null;
+    }
+
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         if(event.getAction() != Action.RIGHT_CLICK_BLOCK)
             return;
         if(event.getClickedBlock() == null || event.getClickedBlock().getType() == Material.AIR)
+            return;
+        if((!event.getPlayer().isOp() && !event.getPlayer().hasPermission("sellsigns.admin")) && skyblockHook && !SuperiorSkyblockAPI.getPlayer(event.getPlayer()).hasIsland() && !SuperiorSkyblockAPI.getIslandAt(event.getClickedBlock().getLocation()).equals(SuperiorSkyblockAPI.getPlayer(event.getPlayer()).getIsland()))
             return;
         if(event.getClickedBlock().getState() instanceof Sign) {
             Sign sign = (Sign) event.getClickedBlock().getState();

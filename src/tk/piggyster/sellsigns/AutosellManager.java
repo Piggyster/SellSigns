@@ -1,6 +1,7 @@
 package tk.piggyster.sellsigns;
 
 import me.aqua.fadepets.PetsPlugin;
+import me.aqua.fadepets.player.PlayerManager;
 import net.brcdev.shopgui.ShopGuiPlusApi;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -16,6 +17,8 @@ import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permission;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.DecimalFormat;
@@ -34,13 +37,17 @@ public class AutosellManager {
         SellSignsPlugin.getInstance().reloadDataConfig();
         fetchSigns();
         DecimalFormat df = new DecimalFormat("#,###.##");
-        counter = SellSignsPlugin.getInstance().getConfig().getInt("settings.autosell_interval");
+        int count = SellSignsPlugin.getInstance().getConfig().getInt("settings.autosell_interval");
+        boolean usePets = SellSignsPlugin.getInstance().getServer().getPluginManager().getPlugin("SkyblockPets") != null;
+        PlayerManager manager = usePets ? PetsPlugin.getInstance().getPlayerManager() : null;
+        counter = count;
         new BukkitRunnable() {
             @Override
             public void run() {
+                long ms = System.currentTimeMillis();
                 counter--;
                 if(counter == 0) {
-                    counter = SellSignsPlugin.getInstance().getConfig().getInt("settings.autosell_interval");
+                    counter = count;
                 }
                 for(Map.Entry<UUID, List<Sign>> entry : autosigns.entrySet()) {
                     List<Sign> signs = entry.getValue();
@@ -73,7 +80,7 @@ public class AutosellManager {
                     entry.setValue(signs);
                 }
 
-                if(counter != SellSignsPlugin.getInstance().getConfig().getInt("settings.autosell_interval")) {
+                if(counter != count) {
                     return;
                 }
 
@@ -112,8 +119,8 @@ public class AutosellManager {
                         if(total == 0)
                             continue;
                         double boostmoney = 0;
-                        if(SellSignsPlugin.getInstance().getServer().getPluginManager().getPlugin("SkyblockPets") != null) {
-                            boostmoney = (PetsPlugin.getInstance().getPlayerManager().getPlayerData(player.getUniqueId()).getMoneyBoost() / 100D) * total;
+                        if(usePets) {
+                            boostmoney = (manager.getPlayerData(player.getUniqueId()).getMoneyBoost() / 100D) * total;
                         }
                         player.sendMessage(Utils.getMessage("autosell_sold").replace("{items}", df.format(count)).replace("{amount}", df.format(total)));
                         total += boostmoney;
@@ -128,6 +135,7 @@ public class AutosellManager {
                         }
                     }
                 }
+                SellSignsPlugin.getInstance().getLogger().info((System.currentTimeMillis() - ms) + "ms sell time");
             }
         }.runTaskTimer(plugin, 0, 20);
     }
@@ -199,7 +207,7 @@ public class AutosellManager {
     }
 
     public int getLimit(Player player) {
-        for(int i = 10; i > 0; i--) {
+        for(int i = 100; i > 0; i--) {
             if(player.hasPermission("sellsigns.limit." + i)) {
                 return i;
             }
